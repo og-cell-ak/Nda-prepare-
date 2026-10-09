@@ -7,7 +7,7 @@ new vm.Script(bankCode,{filename:'bank.js'});
 new vm.Script(appCode,{filename:'app.js'});
 const sandbox={};vm.runInNewContext(bankCode+'\nthis.__bank=BANK;this.__words=WORDS;',sandbox);
 const bank=sandbox.__bank, words=sandbox.__words;
-if(!Array.isArray(bank)||bank.length<70)throw Error('Expected at least 70 questions; found '+(bank||[]).length);
+if(!Array.isArray(bank)||bank.length<120)throw Error('Expected at least 70 questions; found '+(bank||[]).length);
 if(!Array.isArray(words)||words.length<30)throw Error('Expected at least 30 vocabulary cards');
 const ids=new Set();
 for(const q of bank){
