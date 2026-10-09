@@ -1,0 +1,6 @@
+{
+  "appId": "in.ndaprepare.app",
+  "appName": "NDA Prepare",
+  "webDir": "www",
+  "server": {"androidScheme": "https"}
+}
