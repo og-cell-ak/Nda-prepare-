@@ -16,7 +16,6 @@ jobs:
         name: Set up Node
         with:
           node-version: '22'
-          cache: npm
       - uses: actions/setup-java@v4
         name: Set up Java
         with:
