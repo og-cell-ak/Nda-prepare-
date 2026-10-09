@@ -7,7 +7,7 @@ new vm.Script(bankCode,{filename:'bank.js'});
 new vm.Script(appCode,{filename:'app.js'});
 const sandbox={};vm.runInNewContext(bankCode+'\nthis.__bank=BANK;this.__words=WORDS;',sandbox);
 const bank=sandbox.__bank, words=sandbox.__words;
-if(!Array.isArray(bank)||bank.length<120)throw Error('Expected at least 70 questions; found '+(bank||[]).length);
+if(!Array.isArray(bank)||bank.length!==5000)throw Error('Expected exactly 5000 questions; found '+(bank||[]).length);
 if(!Array.isArray(words)||words.length<30)throw Error('Expected at least 30 vocabulary cards');
 const ids=new Set();
 for(const q of bank){
@@ -22,8 +22,11 @@ for(const f of ['index.html','styles.css'])if(!fs.existsSync(path.join(root,f)))
 for(const tab of ['research','vocabulary','review'])if(!html.includes('data-view="'+tab+'"')||!appCode.includes('function '+(tab==='research'?'research':tab==='vocabulary'?'vocabulary':'review')+'()'))throw Error('Missing navigation/content: '+tab);
 if(!appCode.includes('reviewWrong')||!appCode.includes('reviewUnseen'))throw Error('Adaptive review actions missing');
 if(!appCode.includes('UPSC previous question papers'))throw Error('Official paper guidance missing');
-console.log('PASS 1/5: JavaScript syntax');
-console.log('PASS 2/5: '+bank.length+' unique questions, four distinct options each');
-console.log('PASS 3/5: valid answer indexes and complete explanations/rules');
-console.log('PASS 4/5: '+words.length+' complete vocabulary cards and all main module navigation');
-console.log('PASS 5/5: adaptive review controls and official exam guidance');
+if(new Set(bank.map(q=>q.q)).size!==bank.length)throw Error('Duplicate question prompts found');
+if(!appCode.includes('!state.answered[q.id]'))throw Error('Answered-question exclusion missing');
+console.log('PASS 1/6: JavaScript syntax and no duplicate prompts');
+console.log('PASS 2/6: '+bank.length+' unique questions, four distinct options each');
+console.log('PASS 3/6: valid answer indexes and complete explanations/rules');
+console.log('PASS 4/6: '+words.length+' complete vocabulary cards and all main module navigation');
+console.log('PASS 5/6: adaptive review controls and official exam guidance');
+console.log('PASS 6/6: ordinary practice excludes previously answered questions');
